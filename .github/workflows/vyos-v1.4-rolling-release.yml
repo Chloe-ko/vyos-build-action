@@ -3,6 +3,11 @@ name: VyOS v1.4 Rolling Release
 on:
   schedule:
     - cron: 0 3 * * *
+  push:
+    branches: [ 'master' ]
+  pull_request:
+    branches: [ master ]
+  
 
 env:
   GIT_CLONE_URL: https://github.com/vyos/vyos-build
@@ -21,6 +26,9 @@ jobs:
       options: --workdir /vyos --privileged
 
     steps:
+      - name: Install hub
+        run: sudo apt-get update && sudo apt-get install -y hub
+        
       - name: Clone source code
         run: git clone -b $BRANCH --single-branch $GIT_CLONE_URL
 
